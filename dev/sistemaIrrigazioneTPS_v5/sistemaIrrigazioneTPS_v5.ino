@@ -14,6 +14,9 @@
 
 /* Definizione Pulsanti Telecomando */
 #define OK_BUTTON 16712445
+// #define DOWN_BUTTON 16754775
+#define DOWN_BUTTON 2747854299
+#define UP_BUTTON 16736925
 #define ZERO_BUTTON 16730805
 #define ONE_BUTTON 16738455
 #define TWO_BUTTON 16750695
@@ -246,6 +249,16 @@ void fetch() {
   while (irrecv.decode(&results)) {
     switch (results.value) {
 
+      /* Alzo di 1 l'ora */
+      case UP_BUTTON:
+        raiseHour();
+        break;
+
+      /* Abbasso di 1 l'ora */
+      case DOWN_BUTTON:
+        lowerHour();
+        break;
+
       /* Start Manuale */
       case ZERO_BUTTON:
         startEV();
@@ -325,19 +338,23 @@ char atCertainTime() {
   int i;
   bool isEqual = true;
 
+  lcd.setCursor(11, 0);
+  lcd.print(hourToMatch);
+
   char cTime[5];
-  sprintf(cTime, "%02d/%02d", now.hour(), now.minute());
+  sprintf(cTime, "%02d:%02d", now.hour(), now.minute());
   
   for(i = 0; i < sizeof(hourToMatch); i++) {
     if(cTime[i] != hourToMatch[i]) {
       isEqual = false;
       break;
+     }
     }
-
+    
     if(isEqual) {
+      Serial.println("Reached Time.");
       startEV();
     }
-  }
 
   return *cTime;
 }
@@ -359,7 +376,51 @@ void getTime() {
   char cTime_ = atCertainTime();
   char currentDateTime[30];
   
-  sprintf(currentDateTime, "%02d/%02d/%04d %02d:%02d", now.day(), now.month(), now.year(), now.hour(), now.minute());
+  sprintf(currentDateTime, "%02d/%02d/%04d", now.day(), now.month(), now.year());
   Serial.println(currentDateTime);
   writeLine(currentDateTime, 0, 100);
+}
+
+
+ /* * * * * * * * * * * * * * * * * * * * * * * /
+ *  Funzione: lowerHour()                      *
+ *  Params: -\-                                *
+ *  Info: Lowers the hour of 1 hour            *                                
+ / * * * * * * * * * * * * * * * * * * * * * * */
+ 
+void lowerHour() {
+  int iHour;
+  char aHourToMatch[5];
+  char cHour[2] = {hourToMatch[0], hourToMatch[1]};
+
+  iHour = atoi(cHour);
+
+  if(iHour >= 0) {
+    iHour--;
+  }
+  
+  sprintf(aHourToMatch, "%02d:00", iHour);
+  hourToMatch = aHourToMatch;
+}
+
+
+ /* * * * * * * * * * * * * * * * * * * * * * * /
+ *  Funzione: raiseHour()                      *
+ *  Params: -\-                                *
+ *  Info: Raises the hour of 1 hour            *                                
+ / * * * * * * * * * * * * * * * * * * * * * * */
+ 
+void raiseHour() {
+  int iHour;
+  char aHourToMatch[5];
+  char cHour[2] = {hourToMatch[0], hourToMatch[1]};
+
+  iHour = atoi(cHour);
+
+  if(iHour <= 24) {
+    iHour++;
+  }
+  
+  sprintf(aHourToMatch, "%02d:00", iHour);
+  hourToMatch = aHourToMatch;
 }
