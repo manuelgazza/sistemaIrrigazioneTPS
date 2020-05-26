@@ -1,0 +1,2 @@
+# sistemaIrrigazioneTPS
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f9f4046fc0d848e188edb816e3b0478c)](https://app.codacy.com/manual/manuelgazza/sistemaIrrigazioneTPS?utm_source=github.com&utm_medium=referral&utm_content=manuelgazza/sistemaIrrigazioneTPS&utm_campaign=Badge_Grade_Settings)
