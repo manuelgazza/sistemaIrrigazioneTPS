@@ -198,8 +198,6 @@ void startEV() {
  / * * * * * * * * * * * * * * * * * * * * * * */
  
 void writeLine(String messaggio, int line, int delayMS){
-  int lunghezza = messaggio.length();
-  int i = 0;
   lcd.setCursor(0, line);
   lcd.print(messaggio);
   delay(delayMS);
@@ -341,7 +339,7 @@ char atCertainTime() {
   lcd.setCursor(11, 0);
   lcd.print(hourToMatch);
 
-  char cTime[5];
+  char cTime[6];
   sprintf(cTime, "%02d:%02d", now.hour(), now.minute());
   
   for(i = 0; i < sizeof(hourToMatch); i++) {
@@ -372,8 +370,7 @@ void getTime() {
 
   DateTime now;
   now = rtc.now();
-  
-  char cTime_ = atCertainTime();
+  atCertainTime();
   char currentDateTime[30];
   
   sprintf(currentDateTime, "%02d/%02d/%04d", now.day(), now.month(), now.year());
@@ -390,8 +387,8 @@ void getTime() {
  
 void lowerHour() {
   int iHour;
-  char aHourToMatch[5];
-  char cHour[2] = {hourToMatch[0], hourToMatch[1]};
+  char aHourToMatch[6];
+  char cHour[3] = {hourToMatch[0], hourToMatch[1]};
 
   iHour = atoi(cHour);
 
@@ -412,8 +409,8 @@ void lowerHour() {
  
 void raiseHour() {
   int iHour;
-  char aHourToMatch[5];
-  char cHour[2] = {hourToMatch[0], hourToMatch[1]};
+  char aHourToMatch[6];
+  char cHour[3] = {hourToMatch[0], hourToMatch[1]};
 
   iHour = atoi(cHour);
 
